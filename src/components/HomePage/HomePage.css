@@ -1,0 +1,28 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.icon{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-right: 100px;
+    margin-top: 20px;
+}
+.Search{
+    text-align: center;
+    margin-top: 200px;
+    
+}
+.flex{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.nav{
+    display: flex;
+    justify-content: end;
+    padding:0,20px
+}

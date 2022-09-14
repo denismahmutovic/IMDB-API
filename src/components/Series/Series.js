@@ -7,42 +7,46 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Pagination } from "semantic-ui-react";
-import { Stack } from "@mui/system";
-import MoviesCss from "./Movies.css";
-const Movies = () => {
-  const [movies, setMovies] = React.useState([]);
-  const [page, setPage] = useState(1);
+import { height } from "@mui/system";
+import SeriesCss from "./Series.css";
+import { useNavigate, useLocation } from "react-router-dom";
 
-  const getNews = async (page) => {
+const Series = () => {
+  const [series, setSeries] = React.useState([]);
+
+  const navigate = useNavigate();
+  const getNewss = async () => {
     const res = await axios.get(
       `https://imdb-api.com/en/API/Top250TVs/k_khlg45sc`
     );
 
-    setMovies(res.data.items.splice(10, 9));
+    setSeries(res.data.items.splice(10, 8));
     console.log(res.data);
   };
 
   useEffect(() => {
-    getNews();
-  }, [page]);
+    getNewss();
+  }, []);
 
   return (
     <div>
       <div className="logo">
-        <img
-          src="https://onthemove.org/wp-content/uploads/2018/11/at-the-movies-web-banner.jpg"
-          width="100%"
-          height={"400vh"}
-        />
+        {
+          <img
+            src="https://i.imgur.com/aokrU9A.png"
+            width="100%"
+            height={"400vh"}
+          />
+        }
       </div>
-      <div className="flex">
-        {movies.map((el) => {
+      <div className="flex" width="">
+        {series.map((el) => {
           return (
-            <Card sx={{ maxWidth: 345 }}>
+            <Card className="card" sx={{ width: 345 }}>
+              {" "}
               <CardMedia
                 component="img"
-                height="140"
+                height="194"
                 image={el.image}
                 alt="green iguana"
               />
@@ -55,19 +59,25 @@ const Movies = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small">Learn More</Button>
+                <Button
+                  size="small"
+                  onClick={() =>
+                    navigate(`/news/${el.id}`, {
+                      state: {
+                        series: el,
+                      },
+                    })
+                  }
+                >
+                  Procitaj Vise
+                </Button>
               </CardActions>
             </Card>
           );
         })}
-        <Pagination
-          defaultActivePage={1}
-          totalPages={100}
-          onClick={() => setPage((prev) => prev + 1)}
-        />
+        {/* <Pagination defaultActivePage={1} totalPages={100} /> */}
       </div>
     </div>
   );
 };
-export default Movies;
+export default Series;

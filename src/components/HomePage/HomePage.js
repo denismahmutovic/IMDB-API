@@ -26,30 +26,32 @@ export default function HomePage() {
     marginRight: 20,
   };
 
-  const [todos, setTodos] = React.useState([]);
-  const [title, setTitle] = useState("fast");
+  const [searchData, setSerachData] = React.useState([]);
+  const [title, setTitle] = useState("");
 
-  const getNews = async () => {
+  const getSearchData = async (title) => {
     const res = await axios.get(
-      `https://imdb-api.com/en/API/SearchMovie/k_12345678/${title}`
+      `https://imdb-api.com/en/API/SearchTitle/k_khlg45sc/${title}`
     );
 
-    setTodos(res.data.results.splice(0, 3));
+    setSerachData(res.data.results.splice(0, 3));
     console.log(res.data);
   };
 
   useEffect(() => {
-    getNews();
-  }, [title]);
+    getSearchData(title);
+  }, []);
 
   return (
     <div className="Boss">
       <Container>
-        <div className="Search">{/* Search */}</div>
-        <h1>HOME PAGE</h1>
+        <div className="Search">
+          <input value={title} onChange={(e) => setTitle(e.target.value)} />
+          <button onClick={() => getSearchData(title)}>search</button>
+        </div>
 
         <div className="flex">
-          {todos.map((el) => {
+          {searchData.map((el) => {
             return (
               <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
@@ -63,13 +65,10 @@ export default function HomePage() {
                     {el.title}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Lizards are a widespread group of squamate reptiles, with
-                    over 6,000 species, ranging across all continents except
-                    Antarctica
+                    {el.crew}
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Share</Button>
                   <Button size="small">Learn More</Button>
                 </CardActions>
               </Card>

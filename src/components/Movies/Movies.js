@@ -16,7 +16,7 @@ const Movies = () => {
 
   const getNews = async (page) => {
     const res = await axios.get(
-      `https://imdb-api.com/en/API/Top250TVs/k_khlg45sc`
+      `https://imdb-api.com/_page=${page}&en/API/Top250TVs/k_khlg45sc`
     );
 
     setMovies(res.data.items.splice(10, 9));
@@ -24,7 +24,7 @@ const Movies = () => {
   };
 
   useEffect(() => {
-    getNews();
+    getNews(page);
   }, [page]);
 
   return (

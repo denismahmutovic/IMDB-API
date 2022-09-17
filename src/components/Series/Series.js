@@ -69,7 +69,7 @@ const Series = () => {
                     })
                   }
                 >
-                  Procitaj Vise
+                  Procitaj VIse
                 </Button>
               </CardActions>
             </Card>

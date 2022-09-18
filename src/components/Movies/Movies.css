@@ -1,8 +1,7 @@
-.flex{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 .card{
     padding: 0,10px;
+}
+.logo{
+    width: 100%;
 }

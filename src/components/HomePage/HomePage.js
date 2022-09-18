@@ -31,7 +31,7 @@ export default function HomePage() {
 
   const getSearchData = async (title) => {
     const res = await axios.get(
-      `https://imdb-api.com/en/API/SearchTitle/k_khlg45sc/${title}`
+      `https://imdb-api.com/en/API/SearchTitle/k_u5msz3xh/${title}`
     );
 
     setSerachData(res.data.results.splice(0, 3));
@@ -46,17 +46,38 @@ export default function HomePage() {
     <div className="Boss">
       <Container>
         <div className="Search">
-          <input value={title} onChange={(e) => setTitle(e.target.value)} />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/IMDB_Logo_2016.svg/2560px-IMDB_Logo_2016.svg.png"
+            width={"64"}
+            height="32"
+
+            //logo  img
+          />
+          <input
+            value={title}
+            placeholder={"Search IMDb"}
+            onChange={(e) => setTitle(e.target.value)}
+          />
           <button onClick={() => getSearchData(title)}>search</button>
         </div>
 
         <div className="flex">
           {searchData.map((el) => {
             return (
-              <Card sx={{ maxWidth: 345 }}>
+              <Card
+                sx={{
+                  minWidth: 250,
+                  maxWidth: 350,
+                  mt: 10,
+                  minHeight: "320px",
+                  maxHeight: "320px",
+                  backgroundColor: "#grey",
+                  color: "#black",
+                }}
+              >
                 <CardMedia
                   component="img"
-                  height="140"
+                  height="200"
                   image={el.image}
                   alt="green iguana"
                 />
@@ -64,13 +85,11 @@ export default function HomePage() {
                   <Typography gutterBottom variant="h5" component="div">
                     {el.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {el.crew}
+                  <Typography color="text.secondary" fontSize={20}>
+                    {el.description}
                   </Typography>
                 </CardContent>
-                <CardActions>
-                  <Button size="small">Learn More</Button>
-                </CardActions>
+                <CardActions></CardActions>
               </Card>
             );
           })}

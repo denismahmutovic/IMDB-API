@@ -10,17 +10,22 @@ import axios from "axios";
 import { height } from "@mui/system";
 import SeriesCss from "./Series.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Pagination } from "semantic-ui-react";
+import Paginacija from "../Paginacija/Paginacija";
 
 const Series = () => {
   const [series, setSeries] = React.useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(18);
+
   const navigate = useNavigate();
   const getNewss = async () => {
     const res = await axios.get(
-      `https://imdb-api.com/en/API/Top250TVs/k_khlg45sc`
+      `https://imdb-api.com/en/API/Top250Movies/k_ncc5h4yz`
     );
 
-    setSeries(res.data.items.splice(10, 8));
+    setSeries(res.data.items);
     console.log(res.data);
   };
 
@@ -28,8 +33,19 @@ const Series = () => {
     getNewss();
   }, []);
 
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentPosts = series.slice(firstPostIndex, lastPostIndex);
   return (
-    <div>
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <div className="logo">
         {
           <img
@@ -39,10 +55,21 @@ const Series = () => {
           />
         }
       </div>
-      <div className="flex" width="">
-        {series.map((el) => {
+      <div className="flex">
+        {currentPosts.map((el) => {
           return (
-            <Card className="card" sx={{ width: 345 }}>
+            <Card
+              className="card"
+              sx={{
+                minWidth: 250,
+                maxWidth: 250,
+                mt: 3,
+                minHeight: "320px",
+                maxHeight: "340px",
+                // backgroundColor: "#cccccc",
+                // color: "#cb2d6f",
+              }}
+            >
               {" "}
               <CardMedia
                 component="img"
@@ -60,6 +87,7 @@ const Series = () => {
               </CardContent>
               <CardActions>
                 <Button
+                  className="btn"
                   size="small"
                   onClick={() =>
                     navigate(`/news/${el.id}`, {
@@ -75,8 +103,12 @@ const Series = () => {
             </Card>
           );
         })}
-        {/* <Pagination defaultActivePage={1} totalPages={100} /> */}
       </div>
+      <Paginacija
+        totalPosts={series.length}
+        postPerPage={postPerPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

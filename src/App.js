@@ -8,7 +8,7 @@ import Movies from "./components/Movies/Movies";
 import Series from "./components/Series/Series";
 import SingleNews from "./components/SingleNews";
 import Footer from "./components/Footer/Footer";
-import { margin } from "@mui/system";
+import MoviesNews from "./components/MoviesNews";
 
 let activeStyle = {
   textDecoration: "underline",
@@ -45,9 +45,10 @@ export default function App() {
 
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="movies" element={<Movies />} />
-        <Route path="series" element={<Series />} />
-        <Route path="news/:id" element={<SingleNews />} />
+        <Route path="/movies" element={<Movies />} />
+        <Route path="/series" element={<Series />} />
+        <Route path="/news/:id" element={<SingleNews />} />
+        <Route path="/movies/:id" element={<MoviesNews />} />
       </Routes>
       <Footer />
     </div>

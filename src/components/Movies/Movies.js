@@ -8,27 +8,45 @@ import Typography from "@mui/material/Typography";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Pagination } from "semantic-ui-react";
+import { useNavigate } from "react-router-dom";
 import { Stack } from "@mui/system";
 import MoviesCss from "./Movies.css";
+import Paginacija from "../Paginacija/Paginacija";
+
 const Movies = () => {
   const [movies, setMovies] = React.useState([]);
-  const [page, setPage] = useState(1);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(18);
+
+  const navigate = useNavigate();
   const getNews = async (page) => {
     const res = await axios.get(
-      `https://imdb-api.com/_page=${page}&en/API/Top250TVs/k_khlg45sc`
+      `https://imdb-api.com/en/API/Top250TVs/k_ncc5h4yz`
     );
 
-    setMovies(res.data.items.splice(10, 9));
+    setMovies(res.data.items.splice(10, 40));
     console.log(res.data);
   };
 
   useEffect(() => {
-    getNews(page);
-  }, [page]);
+    getNews();
+  }, []);
+
+  const lastPostIndex = currentPage * postPerPage;
+  const firstPostIndex = lastPostIndex - postPerPage;
+  const currentPosts = movies.slice(firstPostIndex, lastPostIndex);
 
   return (
-    <div>
+    <div
+      style={{
+        width: "100%",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <div className="logo">
         <img
           src="https://onthemove.org/wp-content/uploads/2018/11/at-the-movies-web-banner.jpg"
@@ -37,14 +55,15 @@ const Movies = () => {
         />
       </div>
       <div className="flex">
-        {movies.map((el) => {
+        {currentPosts.map((el) => {
           return (
-            <Card sx={{ maxWidth: 345 }}>
+            <Card sx={{ maxWidth: 345, maxHeight: 350 }}>
               <CardMedia
                 component="img"
-                height="140"
+                height="220"
                 image={el.image}
                 alt="green iguana"
+                onClick={() => navigate(`/news/:id/${el.id}`)}
               />
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -55,18 +74,29 @@ const Movies = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Share</Button>
-                <Button size="small">Learn More</Button>
+                <Button size="small"> Share</Button>
+                <Button
+                  size="small"
+                  onClick={() =>
+                    navigate(`/movies/${el.id}`, {
+                      state: {
+                        series: el,
+                      },
+                    })
+                  }
+                >
+                  Procitaj Vise{" "}
+                </Button>
               </CardActions>
             </Card>
           );
         })}
-        <Pagination
-          defaultActivePage={1}
-          totalPages={100}
-          onClick={() => setPage((prev) => prev + 1)}
-        />
       </div>
+      <Paginacija
+        totalPosts={movies.length}
+        postPerPage={postPerPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

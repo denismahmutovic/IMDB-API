@@ -15,7 +15,7 @@ function MovieCast() {
 
   const getCast = async (id) => {
     const res = await axios.get(
-      `https://imdb-api.com/en/API/FullCast/k_khlg45sc/${id}`
+      `https://imdb-api.com/en/API/FullCast/k_ncc5h4yz/${id}`
     );
     setCast(res.data.actors);
   };
